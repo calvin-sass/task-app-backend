@@ -1,30 +1,27 @@
-# Stage 1: Build
-FROM maven:3.9.6-eclipse-temurin-17 as builder
+# Stage 1: Build the application
+FROM maven:3.9.6-eclipse-temurin-21 as builder
 
-# Set working directory
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy pom.xml and download dependencies
+# Copy Maven files first for better caching
 COPY pom.xml .
-RUN mvn dependency:go-offline
-
-# Copy the rest of the source code
 COPY src ./src
 
-# Package the app
+# Build the application without running tests
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run
-FROM eclipse-temurin:17-jdk-alpine
+# Stage 2: Run the application
+FROM eclipse-temurin:21-jdk-alpine
 
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy the jar from the builder stage
+# Copy the built JAR file from the previous stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose port (optional)
+# Expose the port the app runs on (optional, helpful for local testing)
 EXPOSE 8080
 
-# Run the jar
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
