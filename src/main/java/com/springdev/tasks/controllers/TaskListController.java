@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/task-lists")
+@CrossOrigin(origins = "https://task-list-app-frontend.onrender.com")
 public class TaskListController {
 
     private final TaskListService taskListService;
