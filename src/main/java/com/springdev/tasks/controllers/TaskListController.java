@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/task-lists")
-@CrossOrigin(origins = "https://task-list-app-frontend.onrender.com")
 public class TaskListController {
 
     private final TaskListService taskListService;
@@ -33,7 +32,7 @@ public class TaskListController {
                 .toList();
     }
 
-    // POST /task-list
+    // POST /task-lists
     @PostMapping
     public TaskListDto createTaskList(
             @RequestBody TaskListDto taskListDto
